@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "sftp.fullname" . }}-sftp-depl
+  labels:
+    {{ include "sftp.labels" . | indent 4 }}
+    app.georchestra.org: sftp
+spec:
+  selector:
+    matchLabels:
+      {{- include "sftp.selectorLabels" . | nindent 6 }}
+      app.georchestra.org: sftp
+  template:
+    metadata:
+      labels:
+        {{- include "sftp.selectorLabels" . | nindent 8 }}
+        app.georchestra.org: sftp
+    spec:
+      {{- with .Values.sftp.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: sftp
+          image: {{ .Values.sftp.image }}
+          imagePullPolicy: {{ .Values.sftp.imagePullPolicy }}
+          resources: {}
+          volumeMounts:
+            - name: authorized-keys
+              mountPath: /tmp/dotssh
+            - name: hostkeys
+              mountPath: /tmp/hostkeys
+            - name: etc-hostkeys
+              mountPath: /etc/ssh/ssh_host_keys
+          {{- range .Values.sftp.volumes }}
+            - name: {{ .name }}
+              mountPath: /mnt/{{ .name }}
+          {{- end }}
+          command:
+            - /bin/bash
+            - -c
+            - cp /tmp/hostkeys/* /etc/ssh/ssh_host_keys/ ; chmod 600 /etc/ssh/ssh_host_keys/* ;
+              chmod 700 /home/sftp/.ssh ;
+              chown sftp:sftp /home/sftp/.ssh ;
+              cp -f /tmp/dotssh/authorized_keys /home/sftp/.ssh/authorized_keys ;
+              chmod 600 /home/sftp/.ssh/authorized_keys ;
+              chown sftp:sftp /home/sftp/.ssh/authorized_keys ;
+              /usr/sbin/sshd -D -e ;
+      volumes:
+      - name: authorized-keys
+        configMap:
+          name: sftp-cm
+      - name: hostkeys
+        configMap:
+          name: sftp-hostkeys-cm
+      - name: etc-hostkeys
+        emptyDir: {}
+      {{- .Values.sftp.volumes | toYaml | nindent 6 }}
+status: {}

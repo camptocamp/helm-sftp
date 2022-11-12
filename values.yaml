@@ -1,50 +1,26 @@
-# Default values for sftp.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+---
+sftp:
+  image: camptocamp/sftp:bullseye-k8s-georchestra
+  imagePullPolicy: Always
+  nodePort: 30022
 
-replicaCount: 1
+# Those volumes will be available in /mnt
+# Example :
+#  - name: geonetwork-datadir
+#    persistentVolumeClaim:
+#      claimName: georchestra-geonetwork-datadir
+  volumes: []
 
-image:
-  repository: nginx
-  tag: stable
-  pullPolicy: IfNotPresent
+# Developper and customer public keys
+  authorized_keys: ""
 
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
-
-service:
-  type: ClusterIP
-  port: 80
-
-ingress:
-  enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths: []
-
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
-
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
+# Server keys
+  host_keys:
+    ssh_host_dsa_key: TBD
+    ssh_host_dsa_key.pub: TBD
+    ssh_host_ecdsa_key: TBD
+    ssh_host_ecdsa_key.pub: TBD
+    ssh_host_ed25519_key: TBD
+    ssh_host_ed25519_key.pub: TBD
+    ssh_host_rsa_key: TBD
+    ssh_host_rsa_key.pub: TBD

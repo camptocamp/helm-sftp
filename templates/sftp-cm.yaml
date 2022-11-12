@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sftp-cm
+data:
+  authorized_keys: |
+    {{- .Values.sftp.authorized_keys | nindent 4 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sftp-hostkeys-cm
+data:
+  {{- range $filename, $contents := .Values.sftp.host_keys }}
+  {{ $filename }}: |
+    {{- $contents | trim | nindent 4 }}
+  {{- end }}
