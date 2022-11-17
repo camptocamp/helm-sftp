@@ -18,6 +18,6 @@ metadata:
     app.georchestra.org: sftp
 data:
   {{- range $filename, $contents := .Values.sftp.host_keys }}
-  {{ $filename }}: |-
+  {{ $filename }}: |
     {{- $contents | trim | nindent 4 }}
   {{- end }}
