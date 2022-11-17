@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "sftp.fullname" . }}-sftp-depl
   labels:
-    {{ include "sftp.labels" . | indent 4 }}
+    {{- include "sftp.labels" . | nindent 4 }}
     app.georchestra.org: sftp
 spec:
   selector:
