@@ -1,7 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: sftp-cm
+  name: {{ include "sftp.fullname" . }}-sftp-cm
+  labels:
+    {{- include "sftp.labels" . | nindent 4 }}
+    app.georchestra.org: sftp
 data:
   authorized_keys: |
     {{- .Values.sftp.authorized_keys | nindent 4 }}
@@ -9,9 +12,12 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: sftp-hostkeys-cm
+  name: {{ include "sftp.fullname" . }}-sftp-hostkeys-cm
+  labels:
+    {{- include "sftp.labels" . | nindent 4 }}
+    app.georchestra.org: sftp
 data:
   {{- range $filename, $contents := .Values.sftp.host_keys }}
-  {{ $filename }}: |
+  {{ $filename }}: |-
     {{- $contents | trim | nindent 4 }}
   {{- end }}
