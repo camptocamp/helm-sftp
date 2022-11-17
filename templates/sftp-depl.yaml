@@ -49,10 +49,10 @@ spec:
       volumes:
       - name: authorized-keys
         configMap:
-          name: sftp-cm
+          name: {{ include "sftp.fullname" . }}-sftp-cm
       - name: hostkeys
         configMap:
-          name: sftp-hostkeys-cm
+          name: {{ include "sftp.fullname" . }}-sftp-hostkeys-cm
       - name: etc-hostkeys
         emptyDir: {}
       {{- .Values.sftp.volumes | toYaml | nindent 6 }}
