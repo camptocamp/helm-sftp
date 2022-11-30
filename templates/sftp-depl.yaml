@@ -55,5 +55,7 @@ spec:
           name: {{ include "sftp.fullname" . }}-sftp-hostkeys-cm
       - name: etc-hostkeys
         emptyDir: {}
+      {{- if .Values.sftp.volumes }}
       {{- .Values.sftp.volumes | toYaml | nindent 6 }}
+      {{- end }}
 status: {}
