@@ -41,6 +41,7 @@ spec:
             - -c
             - cp /tmp/hostkeys/* /etc/ssh/ssh_host_keys/ ; chmod 600 /etc/ssh/ssh_host_keys/* ;
               chmod 700 /home/sftp/.ssh ;
+              chown sftp:sftp /home/sftp ;
               chown sftp:sftp /home/sftp/.ssh ;
               cp -f /tmp/dotssh/authorized_keys /home/sftp/.ssh/authorized_keys ;
               chmod 600 /home/sftp/.ssh/authorized_keys ;
