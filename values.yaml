@@ -1,6 +1,6 @@
 ---
 sftp:
-  image: camptocamp/sftp:bullseye-k8s-georchestra
+  image: camptocamp/georchestra-sftp:bullseye-k8s
   imagePullPolicy: Always
   nodePort: 30022
 
