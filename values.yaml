@@ -3,6 +3,7 @@ sftp:
   image: camptocamp/georchestra-sftp:bullseye-k8s
   imagePullPolicy: Always
   nodePort: 30022
+  #imagePullSecrets: secret
 
 # Those volumes will be available in /mnt
 # Example :
